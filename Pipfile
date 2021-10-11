@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+# test requirements
+pytest = "*"
+pytest-cov = "*"
+pytest-asyncio = "*"
+# service requirements
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+gunicorn = "*"
+pylint = "*"
+# model requirements
+scikit-learn = "*"
+pandas = "*"
+numpy = "*"
+
+[dev-packages]
+jupyterlab = "*"
+
+[requires]
+python_version = "3.7"

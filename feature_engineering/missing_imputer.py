@@ -1,19 +1,19 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.impute import SimpleImputer
-import pickle
 import pandas as pd
+
+from predictor.utils import load_pickle, save_pickle
 
 
 class MissingValuesImputer(BaseEstimator, TransformerMixin):
 
     def __init__(self):
-        self.imputer = self.load_imputer()
+        self.pickle_path = 'models/imputer.pkl'
+        self.imputer = load_pickle(self.pickle_path, default=SimpleImputer(strategy='median'))
 
     def fit(self, df):
         self.imputer.fit(df)
-
-        with open("models/imputer.pkl", "wb") as pickle_file:
-            pickle.dump(self.imputer, pickle_file)
+        save_pickle(self.imputer, self.pickle_path)
 
         return self
 
@@ -22,10 +22,3 @@ class MissingValuesImputer(BaseEstimator, TransformerMixin):
         df = pd.DataFrame(self.imputer.transform(df), columns=columns)
 
         return df
-
-    def load_imputer(self):
-        try:
-            with open("models/imputer.pkl", "rb") as pickle_file:
-                return pickle.load(pickle_file)
-        except FileNotFoundError:
-            return SimpleImputer(strategy='median')

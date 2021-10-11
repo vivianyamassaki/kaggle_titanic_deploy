@@ -1,12 +1,14 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
-import pickle
+
+from predictor.utils import load_pickle, save_pickle
 
 
 class OneHotEncode(BaseEstimator, TransformerMixin):
     def __init__(self):
         self.feature = 'Sex'
+        self.pickle_path = 'models/ohe.pkl'
 
     def fit(self, df):
         df[self.feature] = df[self.feature].astype(str)
@@ -15,8 +17,7 @@ class OneHotEncode(BaseEstimator, TransformerMixin):
 
         enc.fit(df['Sex'].values.reshape(-1, 1))
 
-        with open(f"models/ohe.pkl", 'wb') as ohe_filename:
-            pickle.dump(enc, ohe_filename)
+        save_pickle(self.enc, self.pickle_path)
 
         return self
 
@@ -24,8 +25,7 @@ class OneHotEncode(BaseEstimator, TransformerMixin):
 
         df[self.feature] = df[self.feature].astype(str)
 
-        with open("models/ohe.pkl", "rb") as pickle_file:
-            enc = pickle.load(pickle_file)
+        enc = load_pickle(self.pickle_path)
 
         df = self.append_ohe_to_dataframe(enc, df)
 
