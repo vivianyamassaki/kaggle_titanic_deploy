@@ -1,0 +1,30 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@7.0.0
+  aws-ecs: circleci/aws-ecs@02.2.1
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          context: deploy
+          repo: kaggle-titanic-deploy
+          tag: "${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only:
+                - main
+      - aws-ecs/deploy-service-update:
+          context: deploy
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only:
+                - main
+          family: kaggle-titanic-deploy-task
+          cluster-name: $ECS_CLUSTER_NAME
+          container-image-name-updates: "container=kaggle-titanic-deploy,tag=${CIRCLE_SHA1}"
+          force-new-deployment: true
+          service-name: kaggle-titanic-deploy-service
