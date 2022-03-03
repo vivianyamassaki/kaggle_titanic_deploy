@@ -22,5 +22,5 @@ gunicorn predictor.api.app:app --worker-class uvicorn.workers.UvicornWorker --bi
 
 ## More info
 * Link to presentation on Python Brasil 2021: https://www.youtube.com/watch?v=2YAWmpVgn0g
-* Link to Medium post: https://vivianyamassaki.medium.com/terminei-a-modelagem-e-agora-parte-i-604232bb5114 and https://medium.com/@andre.oliveira_17523/terminei-a-modelagem-e-agora-parte-ii-8fb75280bdc6 (in portuguese)
+* Link to Medium post: [Part I](https://vivianyamassaki.medium.com/terminei-a-modelagem-e-agora-parte-i-604232bb5114) and [Part II](https://medium.com/@andre.oliveira_17523/terminei-a-modelagem-e-agora-parte-ii-8fb75280bdc6) (in portuguese)
 
